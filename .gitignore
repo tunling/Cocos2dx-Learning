@@ -11,3 +11,11 @@ proj.android/google-play-services_lib/bin/
 proj.android/google-play-services_lib/gen/
 cocos2d/
 .cocos-project.json
+proj.win32/.vs/MyGame/v15/Browse.VC.db
+proj.win32/.vs/MyGame/v15/Browse.VC.opendb
+proj.win32/.vs/MyGame/v15/Solution.VC.db
+proj.win32/.vs/MyGame/v15/Solution.VC.db-shm
+proj.win32/.vs/MyGame/v15/Solution.VC.db-wal
+proj.win32/.vs/MyGame/v15/ipch/AutoPCH/315f972e033d264c/HELLOWORLDSCENE.ipch
+proj.win32/.vs/MyGame/v15/ipch/AutoPCH/3c64c88d009dd7f1/MAIN.ipch
+proj.win32/.vs/MyGame/v15/.suo
