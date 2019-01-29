@@ -19,3 +19,6 @@ proj.win32/.vs/MyGame/v15/Solution.VC.db-wal
 proj.win32/.vs/MyGame/v15/ipch/AutoPCH/315f972e033d264c/HELLOWORLDSCENE.ipch
 proj.win32/.vs/MyGame/v15/ipch/AutoPCH/3c64c88d009dd7f1/MAIN.ipch
 proj.win32/.vs/MyGame/v15/.suo
+proj.win32/.vs/MyGame/v15/ipch/AutoPCH/8ab760013180916c/APPDELEGATE.ipch
+proj.win32/.vs/MyGame/v15/ipch/AutoPCH/eb7201dc50bd14a7/MENUSCENE.ipch
+*.ipch
