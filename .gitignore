@@ -22,3 +22,5 @@ proj.win32/.vs/MyGame/v15/.suo
 proj.win32/.vs/MyGame/v15/ipch/AutoPCH/8ab760013180916c/APPDELEGATE.ipch
 proj.win32/.vs/MyGame/v15/ipch/AutoPCH/eb7201dc50bd14a7/MENUSCENE.ipch
 *.ipch
+*.db
+*.opendb
