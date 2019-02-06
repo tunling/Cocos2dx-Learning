@@ -5,10 +5,7 @@ class MenuScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
-
     virtual bool init();
-    void menuCloseCallback(cocos2d::Ref* pSender);
-	void MenuScene::gameStartCallback(Ref* pSender);
     CREATE_FUNC(MenuScene);
 };
 
