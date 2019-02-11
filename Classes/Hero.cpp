@@ -14,6 +14,7 @@ void Hero::init(const char* plistFileName) {
 	frameCache = SpriteFrameCache::getInstance();
 	frameCache->addSpriteFramesWithFile(plistFileName);
 	v = 0.1;
+	state = -1;
 }
 void Hero::move(int faceTo) {
 	Animate* animate = nullptr;
@@ -27,6 +28,7 @@ void Hero::move(int faceTo) {
 	animation->setDelayPerUnit(v);
 	animation->setLoops(-1);
 	animate = Animate::create(animation);
+	animate->setTag(faceTo);
 	this->getActionManager()->removeAllActions();
 	this->runAction(animate);
 }

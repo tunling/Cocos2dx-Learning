@@ -10,6 +10,7 @@ public:
 	void move(int faceTo);
 	void stop();
 	void init(const char* plistFileName);
+	int state;
 private:
 protected:
 	SpriteFrameCache* frameCache;

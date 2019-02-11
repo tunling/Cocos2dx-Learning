@@ -39,7 +39,7 @@
     <ClCompile Include="MyCallBackReader.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\WhiteBlackscene.cpp">
+    <ClCompile Include="..\Classes\WhiteBlackScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
   </ItemGroup>

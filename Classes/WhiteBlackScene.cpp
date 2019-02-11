@@ -24,7 +24,7 @@ bool WhiteBlackScene::init()
 	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	
+
 	CSLoader* instance = CSLoader::getInstance();
 	instance->registReaderObject("MyCallBackReader", (ObjectFactory::Instance)MyCallBackReader::getInstance);
 	Node *m_csbNode = CSLoader::createNode("WhiteBlack.csb");
@@ -50,27 +50,49 @@ bool WhiteBlackScene::init()
 	return true;
 }
 
+void WhiteBlackScene::releaseKey() {
+	keys[EventKeyboard::KeyCode::KEY_UP_ARROW] = false;
+	keys[EventKeyboard::KeyCode::KEY_LEFT_ARROW] = false;
+	keys[EventKeyboard::KeyCode::KEY_RIGHT_ARROW] = false;
+	keys[EventKeyboard::KeyCode::KEY_DOWN_ARROW] = false;
+}
+
 void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
-	keys[keycode] = true;
 	if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW) {
+		releaseKey();
+		keys[keycode] = true;
 		actor->move(3);
+		actor->state = 3;
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW) {
+		releaseKey();
+		keys[keycode] = true;
 		actor->move(1);
+		actor->state = 1;
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) {
+		releaseKey();
+		keys[keycode] = true;
 		actor->move(2);
+		actor->state = 2;
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW) {
+		releaseKey();
+		keys[keycode] = true;
 		actor->move(0);
+		actor->state = 0;
 	}
 }
 
 void WhiteBlackScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
 	keys[keycode] = false;
-	if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW || keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW 
-		|| keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW) {
+	if ((keycode == EventKeyboard::KeyCode::KEY_UP_ARROW && actor->state==3)
+		|| (keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW && actor->state == 1)
+		|| (keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && actor->state == 2)
+		|| (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW && actor->state == 0)) 
+	{
 		actor->stop();
+		actor->state = -1;
 	}
 }
 

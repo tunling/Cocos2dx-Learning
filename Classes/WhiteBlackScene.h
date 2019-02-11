@@ -10,7 +10,8 @@ public:
 	virtual bool init();
 	virtual void onKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	virtual void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
-	bool WhiteBlackScene::isKeyPressed(EventKeyboard::KeyCode keyCode);
+	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
+	void releaseKey();
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:
