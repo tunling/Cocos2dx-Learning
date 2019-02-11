@@ -29,7 +29,7 @@ void Hero::move(int faceTo) {
 	animation->setLoops(-1);
 	animate = Animate::create(animation);
 	this->getActionManager()->removeAllActions();
-	this->runAction(animate);
+	this->runAction(animate->clone());
 }
 
 void Hero::stop() {
