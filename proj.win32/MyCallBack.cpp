@@ -1,6 +1,7 @@
 #include "MyCallBack.h" 
 #include "ui/UIText.h" 
-#include "FirstScene.h"
+#include "WhiteBlackScene.h"
+#include "MenuScene.h"
 USING_NS_CC;
 using namespace std;
 using namespace cocos2d::ui;
@@ -29,6 +30,12 @@ Widget::ccWidgetClickCallback MyCallBack::onLocateClickCallback(const string &ca
 	else if (callBackName == "click_end") {
 		return CC_CALLBACK_1(MyCallBack::click_end, this);
 	}
+	else if (callBackName == "restart") {
+		return CC_CALLBACK_1(MyCallBack::restart, this);
+	}
+	else if (callBackName == "menu") {
+		return CC_CALLBACK_1(MyCallBack::menu, this);
+	}
 	return nullptr;
 }
 
@@ -40,9 +47,18 @@ Widget::ccWidgetEventCallback MyCallBack::onLocateEventCallback(const string &ca
 	}
 	return nullptr;
 }
+void MyCallBack::restart(cocos2d::Ref* sender)
+{
+	Director::getInstance()->end();
+}
+
+void MyCallBack::menu(cocos2d::Ref* sender)
+{
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::create(), Color3B(0, 100, 100)));
+}
 void MyCallBack::click_start(cocos2d::Ref* sender)
 {
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, FirstScene::create(), Color3B(0, 100, 100)));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, WhiteBlackScene::create(), Color3B(0, 100, 100)));
 }
 
 void MyCallBack::click_end(cocos2d::Ref* sender)

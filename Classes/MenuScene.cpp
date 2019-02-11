@@ -1,5 +1,5 @@
 #include "MenuScene.h"
-#include "FirstScene.h"
+#include "WhiteBlackScene.h"
 #include "SimpleAudioEngine.h"
 #include"cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
@@ -30,4 +30,5 @@ bool MenuScene::init()
 	m_csbNode->setContentSize(visibleSize);
 	ui::Helper::doLayout(m_csbNode);
 	this->addChild(m_csbNode);
+
 }

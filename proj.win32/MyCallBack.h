@@ -13,6 +13,8 @@ public:
 	virtual cocos2d::ui::Widget::ccWidgetEventCallback onLocateEventCallback(const std::string &callBackName);
 	void click_start(cocos2d::Ref* sender);
 	void click_end(cocos2d::Ref* sender);
+	void restart(cocos2d::Ref* sender);
+	void menu(cocos2d::Ref* sender);
 	void onTouch(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 	void onClick(cocos2d::Ref* sender);
 	void onEvent(cocos2d::Ref* sender, int eventType);

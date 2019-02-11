@@ -1,16 +1,22 @@
-#include "FirstScene.h"
+#include "WhiteBlackScene.h"
 #include "SimpleAudioEngine.h"
 #include "Hero.h"
+#include "SimpleAudioEngine.h"
+#include"cocostudio/CocoStudio.h"
+#include "ui/CocosGUI.h"
+#include "MyCallBackReader.h"
+using namespace cocos2d;
+using namespace cocostudio::timeline;
 USING_NS_CC;
-Scene* FirstScene::createScene()
+Scene* WhiteBlackScene::createScene()
 {
-	return FirstScene::create();
+	return WhiteBlackScene::create();
 }
 static void problemLoading(const char* filename)
 {
 	printf("Error while loading: %s\n", filename);
 }
-bool FirstScene::init()
+bool WhiteBlackScene::init()
 {
 	if (!Scene::init())
 	{
@@ -18,13 +24,18 @@ bool FirstScene::init()
 	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto colorLayer = CCLayerColor::create();
-	colorLayer->initWithColor(ccc4(0, 100, 100, 150));
-	this->addChild(colorLayer, -1);
+	
+	CSLoader* instance = CSLoader::getInstance();
+	instance->registReaderObject("MyCallBackReader", (ObjectFactory::Instance)MyCallBackReader::getInstance);
+	Node *m_csbNode = CSLoader::createNode("WhiteBlack.csb");
+	m_csbNode->setContentSize(visibleSize);
+	ui::Helper::doLayout(m_csbNode);
+	this->addChild(m_csbNode);
+
 	this->scheduleUpdate();
 	auto listener = EventListenerKeyboard::create();
-	listener->onKeyPressed = CC_CALLBACK_2(FirstScene::onKeyPressed, this);
-	listener->onKeyReleased = CC_CALLBACK_2(FirstScene::onKeyReleased, this);
+	listener->onKeyPressed = CC_CALLBACK_2(WhiteBlackScene::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(WhiteBlackScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	actor = Hero::create("1.png");
@@ -39,7 +50,7 @@ bool FirstScene::init()
 	return true;
 }
 
-void FirstScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
+void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	keys[keycode] = true;
 	if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW) {
 		actor->move(3);
@@ -55,7 +66,7 @@ void FirstScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	}
 }
 
-void FirstScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
+void WhiteBlackScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
 	keys[keycode] = false;
 	if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW || keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW 
 		|| keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW) {
@@ -63,7 +74,7 @@ void FirstScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
 	}
 }
 
-bool FirstScene::isKeyPressed(EventKeyboard::KeyCode keyCode) {
+bool WhiteBlackScene::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 	if (keys[keyCode]) {
 		return true;
 	}
@@ -72,7 +83,7 @@ bool FirstScene::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 	}
 }
 
-void FirstScene::update(float dt) {
+void WhiteBlackScene::update(float dt) {
 	float x = actor->getPosition().x;
 	float y = actor->getPosition().y;
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
