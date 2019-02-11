@@ -28,7 +28,6 @@ void Hero::move(int faceTo) {
 	animation->setDelayPerUnit(v);
 	animation->setLoops(-1);
 	animate = Animate::create(animation);
-	animate->setTag(faceTo);
 	this->getActionManager()->removeAllActions();
 	this->runAction(animate);
 }

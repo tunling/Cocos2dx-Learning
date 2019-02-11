@@ -11,11 +11,12 @@ public:
 	virtual void onKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	virtual void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
-	void releaseKey();
+	void releaseKey(int flag);
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:
 	Hero* actor;
+	Hero* star;
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };
 #endif // ! __FIRST_SCENE_H__
