@@ -14,6 +14,8 @@ public:
 	void releaseKey(int flag);
 	void boom_boom(Sprite* boom);
 	void boom_finish(CCNode* pTarget, void* boom);
+	Vec2 getXY(Vec2 xy);
+	bool judge(Vec2 pos, int tag);
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:

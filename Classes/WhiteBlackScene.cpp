@@ -64,6 +64,7 @@ bool WhiteBlackScene::init()
 		star->init("star.plist");
 		star->tag = 2;
 		star->setAnchorPoint(Vec2(0.5, 0));
+		star->setPosition(Vec2(635, 150));
 		star->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
 		this->addChild(star, 0);
 	}
@@ -85,9 +86,65 @@ void WhiteBlackScene::releaseKey(int flag) {
 	}
 }
 
+Vec2 WhiteBlackScene::getXY(Vec2 xy) {
+	int x = xy.x;
+	int y = xy.y;
+	x = abs(x - 185) / 50;
+	y = abs(y - 600) / 50;
+	return Vec2(y, x);
+}
+
 void WhiteBlackScene::boom_finish(CCNode* pTarget, void* boom) {
-	int x = ((Sprite*)boom)->getPosition().x;
-	CCLOG("%d",x);
+	Vec2 XY = getXY(((Sprite*)boom)->getPosition());
+	int x = (int)XY.x;
+	int y = (int)XY.y;
+	int n = 3;
+	int temp_x = x;
+	int temp_y = y;
+	int tag = ((Sprite*)boom)->getTag();
+	CCLOG("%d,%d", x, y);
+	for (int i = 0; i < n; i++) {
+		if (temp_x - 1 >= -1) {
+			map[temp_x--][temp_y] = tag;
+		}
+		else {
+			break;
+		}
+	}
+	temp_x = x;
+	temp_y = y;
+	for (int i = 0; i < n; i++) {
+		if (temp_x + 1 <= 10) {
+			map[temp_x++][temp_y] = tag;
+		}
+		else {
+			break;
+		}
+	}
+	temp_x = x;
+	temp_y = y;
+	for (int i = 0; i < n; i++) {
+		if (temp_y - 1 >= -1) {
+			map[temp_x][temp_y--] = tag;
+		}
+		else {
+			break;
+		}
+	}
+	temp_x = x;
+	temp_y = y;
+	for (int i = 0; i < n; i++) {
+		if (temp_y + 1 <= 10) {
+			map[temp_x][temp_y++] = tag;
+		}
+		else {
+			break;
+		}
+	}
+
+	for (int i = 0; i < 10; i++) {
+		CCLOG("%d %d %d %d %d %d %d %d %d %d", map[i][0], map[i][1], map[i][2], map[i][3], map[i][4], map[i][5], map[i][6], map[i][7], map[i][8], map[i][9]);
+	}
 }
 
 void WhiteBlackScene::boom_boom(Sprite* boom) {
@@ -150,7 +207,7 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 		star->state = 0;
 	}
 
-	if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
+	if (keycode == EventKeyboard::KeyCode::KEY_SPACE) {
 		if (actor->boom > 0) {
 			actor->boom--;
 			int x = actor->getXY().x;
@@ -158,8 +215,23 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 			auto boom_1 = Sprite::create();
 			boom_1->initWithFile("w_heart.png");
 			boom_1->setPosition(Vec2(185 + 50 * x, 600 - 50 * y));
+			boom_1->setTag(1);
 			this->addChild(boom_1);
 			boom_boom(boom_1);
+		}
+	}
+
+	if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
+		if (star->boom > 0) {
+			star->boom--;
+			int x = star->getXY().x;
+			int y = star->getXY().y;
+			auto boom_2 = Sprite::create();
+			boom_2->initWithFile("b_heart.png");
+			boom_2->setPosition(Vec2(185 + 50 * x, 600 - 50 * y));
+			boom_2->setTag(2);
+			this->addChild(boom_2);
+			boom_boom(boom_2);
 		}
 	}
 }
@@ -194,62 +266,73 @@ bool WhiteBlackScene::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 	}
 }
 
+bool WhiteBlackScene::judge(Vec2 pos, int tag) {
+	Vec2 XY = getXY(pos);
+	int x = (int)XY.x;
+	int y = (int)XY.y;
+	CCLOG("%d,%d", x, y);
+	if (map[x][y] == tag || map[x][y] == 0) {
+		return true;
+	}
+	return false;
+}
+
 void WhiteBlackScene::update(float dt) {
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
 		float x = actor->getPosition().x;
 		float y = actor->getPosition().y;
-		if (y >= 150) {
-			actor->setPosition(x, y - 2);
+		if (judge(Vec2(x, y - 1), 1) && y >= 150) {
+			actor->setPosition(x, y - 1);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
 		float x = actor->getPosition().x;
 		float y = actor->getPosition().y;
-		if (x >= 185) {
-			actor->setPosition(x - 2, y);
+		if (judge(Vec2(x - 1, y), 1) && x >= 185) {
+			actor->setPosition(x - 1, y);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
 		float x = actor->getPosition().x;
 		float y = actor->getPosition().y;
-		if (x <= 635) {
-			actor->setPosition(x + 2, y);
+		if (judge(Vec2(x + 1, y), 1) && x <= 635) {
+			actor->setPosition(x + 1, y);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
 		float x = actor->getPosition().x;
 		float y = actor->getPosition().y;
-		if (y<= 600) {
-			actor->setPosition(x, y + 2);
+		if (judge(Vec2(x, y + 1), 1) && y<= 600) {
+			actor->setPosition(x, y + 1);
 		}
 	}
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_S)) {
 		float xx = star->getPosition().x;
 		float yy = star->getPosition().y;
-		if (yy >= 150) {
-			star->setPosition(xx, yy - 2);
+		if (judge(Vec2(xx, yy - 1), 2) && yy >= 150) {
+			star->setPosition(xx, yy - 1);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
 		float xx = star->getPosition().x;
 		float yy = star->getPosition().y;
-		if (xx >= 185) {
-			star->setPosition(xx - 2, yy);
+		if (judge(Vec2(xx - 1, yy), 2) && xx >= 185) {
+			star->setPosition(xx - 1, yy);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
 		float xx = star->getPosition().x;
 		float yy = star->getPosition().y;
-		if (xx <= 635) {
-			star->setPosition(xx + 2, yy);
+		if (judge(Vec2(xx + 1, yy), 2) && xx <= 635) {
+			star->setPosition(xx + 1, yy);
 		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_W)) {
 		float xx = star->getPosition().x;
 		float yy = star->getPosition().y;
-		if (yy <= 600) {
-			star->setPosition(xx, yy + 2);
+		if (judge(Vec2(xx, yy + 1), 2) && yy <= 600) {
+			star->setPosition(xx, yy + 1);
 		}
 	}
 }
