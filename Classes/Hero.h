@@ -10,7 +10,10 @@ public:
 	void move(int faceTo);
 	void stop();
 	void init(const char* plistFileName);
+	Vec2 getXY();
 	int state;
+	int tag;
+	int boom;
 private:
 protected:
 	SpriteFrameCache* frameCache;

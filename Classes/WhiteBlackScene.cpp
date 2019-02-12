@@ -22,6 +22,13 @@ bool WhiteBlackScene::init()
 	{
 		return false;
 	}
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			map[i][j] = 0;
+		}
+	}
+
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -39,21 +46,24 @@ bool WhiteBlackScene::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	actor = Hero::create("1.png");
-	actor->init("actor.plist");
 	if (actor == nullptr) {
 		problemLoading("1.png");
 	}
 	else {
-		actor->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+		actor->init("actor.plist");
+		actor->tag = 1;
+		actor->setAnchorPoint(Vec2(0.5, 0));
+		actor->setPosition(Vec2(185, 600));
 		this->addChild(actor, 0);
 	}
-
 	star = Hero::create("2.png");
-	star->init("star.plist");
 	if (star == nullptr) {
 		problemLoading("2.png");
 	}
 	else {
+		star->init("star.plist");
+		star->tag = 2;
+		star->setAnchorPoint(Vec2(0.5, 0));
 		star->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
 		this->addChild(star, 0);
 	}
@@ -67,11 +77,35 @@ void WhiteBlackScene::releaseKey(int flag) {
 		keys[EventKeyboard::KeyCode::KEY_RIGHT_ARROW] = false;
 		keys[EventKeyboard::KeyCode::KEY_DOWN_ARROW] = false;
 	}
-	if (flag == 2) {
+	else if (flag == 2) {
 		keys[EventKeyboard::KeyCode::KEY_W] = false;
 		keys[EventKeyboard::KeyCode::KEY_A] = false;
 		keys[EventKeyboard::KeyCode::KEY_D] = false;
-		keys[EventKeyboard::KeyCode::KEY_S] = false;
+		keys[EventKeyboard::KeyCode::KEY_S] = false; 
+	}
+}
+
+void WhiteBlackScene::boom_boom(Sprite* boom, int tag, Vec2 XY) {
+	auto scaleTo_s = ScaleTo::create(0.5, 0.5);
+	auto scaleTo_b = ScaleTo::create(0.5, 1.0);
+	auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(), nullptr);
+	boom->runAction(mySequence);
+	int n = 3;
+	Vec2 current = XY;
+	for (int i = 0; i < n; i++) {
+		map[(int)current.x][(int)current.y--] = tag;
+	}
+	current = XY;
+	for (int i = 0; i < n; i++) {
+		map[(int)current.x--][(int)current.y] = tag;
+	}
+	current = XY;
+	for (int i = 0; i < n; i++) {
+		map[(int)current.x++][(int)current.y] = tag;
+	}
+	current = XY;
+	for (int i = 0; i < n; i++) {
+		map[(int)current.x][(int)current.y++] = tag;
 	}
 }
 
@@ -125,6 +159,19 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 		star->move(0);
 		star->state = 0;
 	}
+
+	if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
+		if (actor->boom > 0) {
+			actor->boom--;
+			float x = actor->getXY().x;
+			float y = actor->getXY().y;
+			auto boom_1 = Sprite::create();
+			boom_1->initWithFile("w_heart.png");
+			boom_1->setPosition(Vec2(185 + 50 * x, 600 - 50 * y));
+			this->addChild(boom_1);
+			boom_boom(boom_1, 1, Vec2(x,y));
+		}
+	}
 }
 
 void WhiteBlackScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
@@ -158,33 +205,61 @@ bool WhiteBlackScene::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 }
 
 void WhiteBlackScene::update(float dt) {
-	float x = actor->getPosition().x;
-	float y = actor->getPosition().y;
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-		actor->setPosition(x, y - 1);
+		float x = actor->getPosition().x;
+		float y = actor->getPosition().y;
+		if (y >= 150) {
+			actor->setPosition(x, y - 2);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-		actor->setPosition(x - 1, y);
+		float x = actor->getPosition().x;
+		float y = actor->getPosition().y;
+		if (x >= 185) {
+			actor->setPosition(x - 2, y);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
-		actor->setPosition(x + 1, y);
+		float x = actor->getPosition().x;
+		float y = actor->getPosition().y;
+		if (x <= 635) {
+			actor->setPosition(x + 2, y);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-		actor->setPosition(x, y + 1);
+		float x = actor->getPosition().x;
+		float y = actor->getPosition().y;
+		if (y<= 600) {
+			actor->setPosition(x, y + 2);
+		}
 	}
 
-	float xx = star->getPosition().x;
-	float yy = star->getPosition().y;
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_S)) {
-		star->setPosition(xx, yy - 1);
+		float xx = star->getPosition().x;
+		float yy = star->getPosition().y;
+		if (yy >= 150) {
+			star->setPosition(xx, yy - 2);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_A)) {
-		star->setPosition(xx - 1, yy);
+		float xx = star->getPosition().x;
+		float yy = star->getPosition().y;
+		if (xx >= 185) {
+			star->setPosition(xx - 2, yy);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_D)) {
-		star->setPosition(xx + 1, yy);
+		float xx = star->getPosition().x;
+		float yy = star->getPosition().y;
+		if (xx <= 635) {
+			star->setPosition(xx + 2, yy);
+		}
 	}
 	else if (isKeyPressed(EventKeyboard::KeyCode::KEY_W)) {
-		star->setPosition(xx, yy + 1);
+		float xx = star->getPosition().x;
+		float yy = star->getPosition().y;
+		if (yy <= 600) {
+			star->setPosition(xx, yy + 2);
+		}
 	}
 }
