@@ -85,28 +85,11 @@ void WhiteBlackScene::releaseKey(int flag) {
 	}
 }
 
-void WhiteBlackScene::boom_boom(Sprite* boom, int tag, Vec2 XY) {
+void WhiteBlackScene::boom_boom(Sprite* boom) {
 	auto scaleTo_s = ScaleTo::create(0.5, 0.5);
 	auto scaleTo_b = ScaleTo::create(0.5, 1.0);
 	auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(), nullptr);
 	boom->runAction(mySequence);
-	int n = 3;
-	Vec2 current = XY;
-	for (int i = 0; i < n; i++) {
-		map[(int)current.x][(int)current.y--] = tag;
-	}
-	current = XY;
-	for (int i = 0; i < n; i++) {
-		map[(int)current.x--][(int)current.y] = tag;
-	}
-	current = XY;
-	for (int i = 0; i < n; i++) {
-		map[(int)current.x++][(int)current.y] = tag;
-	}
-	current = XY;
-	for (int i = 0; i < n; i++) {
-		map[(int)current.x][(int)current.y++] = tag;
-	}
 }
 
 void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
@@ -163,13 +146,13 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 	if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
 		if (actor->boom > 0) {
 			actor->boom--;
-			float x = actor->getXY().x;
-			float y = actor->getXY().y;
+			int x = actor->getXY().x;
+			int y = actor->getXY().y;
 			auto boom_1 = Sprite::create();
 			boom_1->initWithFile("w_heart.png");
 			boom_1->setPosition(Vec2(185 + 50 * x, 600 - 50 * y));
 			this->addChild(boom_1);
-			boom_boom(boom_1, 1, Vec2(x,y));
+			boom_boom(boom_1);
 		}
 	}
 }

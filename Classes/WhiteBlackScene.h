@@ -12,7 +12,7 @@ public:
 	virtual void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
 	void releaseKey(int flag);
-	void boom_boom(Sprite* boom, int tag, Vec2 XY);
+	void boom_boom(Sprite* boom);
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:
