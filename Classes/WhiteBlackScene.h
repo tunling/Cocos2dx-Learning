@@ -13,6 +13,7 @@ public:
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
 	void releaseKey(int flag);
 	void boom_boom(Sprite* boom);
+	void boom_finish(CCNode* pTarget, void* boom);
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:

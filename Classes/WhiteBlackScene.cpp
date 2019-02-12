@@ -85,10 +85,17 @@ void WhiteBlackScene::releaseKey(int flag) {
 	}
 }
 
+void WhiteBlackScene::boom_finish(CCNode* pTarget, void* boom) {
+	int x = ((Sprite*)boom)->getPosition().x;
+	CCLOG("%d",x);
+}
+
 void WhiteBlackScene::boom_boom(Sprite* boom) {
 	auto scaleTo_s = ScaleTo::create(0.5, 0.5);
 	auto scaleTo_b = ScaleTo::create(0.5, 1.0);
-	auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(), nullptr);
+	auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(), 
+									   CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::boom_finish), (void*)boom),
+									   nullptr);
 	boom->runAction(mySequence);
 }
 
