@@ -18,43 +18,29 @@ Scene* WhiteBlackScene::createScene()
 	scene->addChild(whiteBlackScene);
 	return scene;
 }
-static void problemLoading(const char* filename)
-{
-	printf("Error while loading: %s\n", filename);
-}
 void WhiteBlackScene::gameover(int tag)
 {
 	if (!end) {
+		char *str;
 		if (tag == 1) {
-			auto swin = Sprite::create();
-			swin->setGlobalZOrder(1000);
-			swin->initWithFile("swin.png");
-			swin->setPosition(Vec2(1024/2, 768/2));
-			this->addChild(swin);
-			auto scaleTo_s = ScaleTo::create(0.5, 0.5);
-			auto scaleTo_b = ScaleTo::create(0.5, 1.0);
-			auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(),
-				CCDelayTime::create(3),
-				CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::endgame), (void*)this),
-				nullptr);
-			swin->runAction(mySequence);
-			end = true;
+			str = "swin.png";
 		}
 		else if (tag == 2) {
-			auto awin = Sprite::create();
-			awin->setGlobalZOrder(1000);
-			awin->initWithFile("awin.png");
-			awin->setPosition(Vec2(1024 / 2, 768 / 2));
-			this->addChild(awin);
-			auto scaleTo_s = ScaleTo::create(0.5, 0.5);
-			auto scaleTo_b = ScaleTo::create(0.5, 1.0);
-			auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(),
-				CCDelayTime::create(3),
-				CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::endgame), (void*)this),
-				nullptr);
-			awin->runAction(mySequence);
-			end = true;
+			str = "awin.png";
 		}
+		auto win = Sprite::create();
+		win->setGlobalZOrder(1000);
+		win->initWithFile(str);
+		win->setPosition(Vec2(1024 / 2, 768 / 2));
+		this->addChild(win);
+		auto scaleTo_s = ScaleTo::create(0.5, 0.5);
+		auto scaleTo_b = ScaleTo::create(0.5, 1.0);
+		auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(),
+			CCDelayTime::create(3),
+			CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::endgame), (void*)this),
+			nullptr);
+		win->runAction(mySequence);
+		end = true;
 	}
 }
 void WhiteBlackScene::contact()
@@ -82,9 +68,9 @@ bool WhiteBlackScene::init()
 	{
 		return false;
 	}
+	end = false;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	end = false;
 	CSLoader* instance = CSLoader::getInstance();
 	instance->registReaderObject("MyCallBackReader", (ObjectFactory::Instance)MyCallBackReader::getInstance);
 	Node *m_csbNode = CSLoader::createNode("WhiteBlack.csb");
@@ -99,44 +85,36 @@ bool WhiteBlackScene::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	actor = Hero::create("1.png");
-	if (actor == nullptr) {
-		problemLoading("1.png");
-	}
-	else {
-		auto physicsBody = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
-		physicsBody->setGravityEnable(false);
-		physicsBody->setRotationEnable(false);
-		physicsBody->setCategoryBitmask(0xffff0000);
-		physicsBody->setContactTestBitmask(0xffffffff);
-		physicsBody->setCollisionBitmask(0xffff0000);
-		actor->setPhysicsBody(physicsBody);
-		actor->init("actor.plist");
-		actor->setTag(1);
-		actor->setAnchorPoint(Vec2(0.5, 0));
-		actor->setPosition(Vec2(185, 600));
-		actor->setGlobalZOrder(10);
-		this->addChild(actor, 0);
-	}
+	auto physicsBody = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+	physicsBody->setGravityEnable(false);
+	physicsBody->setRotationEnable(false);
+	physicsBody->setCategoryBitmask(0xffff0000);
+	physicsBody->setContactTestBitmask(0xffffffff);
+	physicsBody->setCollisionBitmask(0xffff0000);
+	actor->setPhysicsBody(physicsBody);
+	actor->init("actor.plist");
+	actor->setTag(1);
+	actor->setAnchorPoint(Vec2(0.5, 0));
+	actor->setPosition(Vec2(185, 600));
+	actor->setGlobalZOrder(10);
+	this->addChild(actor, 0);
+
 	star = Hero::create("2.png");
-	if (star == nullptr) {
-		problemLoading("2.png");
-	}
-	else {
-		auto physicsBody = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
-		physicsBody->setGravityEnable(false);
-		physicsBody->setRotationEnable(false);
-		physicsBody->setCategoryBitmask(0x0000ffff);
-		physicsBody->setContactTestBitmask(0xffffffff);
-		physicsBody->setCollisionBitmask(0x0000ffff);
-		star->setPhysicsBody(physicsBody);
-		star->init("star.plist");
-		star->setTag(2);
-		star->setAnchorPoint(Vec2(0.5, 0));
-		star->setPosition(Vec2(635, 150));
-		star->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-		star->setGlobalZOrder(10);
-		this->addChild(star, 0);
-	}
+	auto physicsBody = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+	physicsBody->setGravityEnable(false);
+	physicsBody->setRotationEnable(false);
+	physicsBody->setCategoryBitmask(0x0000ffff);
+	physicsBody->setContactTestBitmask(0xffffffff);
+	physicsBody->setCollisionBitmask(0x0000ffff);
+	star->setPhysicsBody(physicsBody);
+	star->init("star.plist");
+	star->setTag(2);
+	star->setAnchorPoint(Vec2(0.5, 0));
+	star->setPosition(Vec2(635, 150));
+	star->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+	star->setGlobalZOrder(10);
+	this->addChild(star, 0);
+
 	contact();
 	return true;
 }

@@ -20,7 +20,6 @@ public:
 	void boom_end(CCNode* pTarget, void* boom);
 	void endgame(CCNode* pTarget, void* scene);
 	void gameover(int tag);
-	bool judge(Vec2 pos, int tag);
 	CREATE_FUNC(WhiteBlackScene);
 	virtual void update(float dt);
 private:
