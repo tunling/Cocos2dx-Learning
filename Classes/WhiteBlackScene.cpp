@@ -26,13 +26,33 @@ void WhiteBlackScene::gameover(int tag)
 {
 	if (!end) {
 		if (tag == 1) {
-			CCLOG("star win!!!!!!!!!!!!!!!!!!");
-			Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene(), Color3B(0, 100, 100)));
+			auto swin = Sprite::create();
+			swin->setGlobalZOrder(1000);
+			swin->initWithFile("swin.png");
+			swin->setPosition(Vec2(1024/2, 768/2));
+			this->addChild(swin);
+			auto scaleTo_s = ScaleTo::create(0.5, 0.5);
+			auto scaleTo_b = ScaleTo::create(0.5, 1.0);
+			auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(),
+				CCDelayTime::create(3),
+				CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::endgame), (void*)this),
+				nullptr);
+			swin->runAction(mySequence);
 			end = true;
 		}
 		else if (tag == 2) {
-			CCLOG("actor win!!!!!!!!!!!!!!!!!!");
-			Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene(), Color3B(0, 100, 100)));
+			auto awin = Sprite::create();
+			awin->setGlobalZOrder(1000);
+			awin->initWithFile("awin.png");
+			awin->setPosition(Vec2(1024 / 2, 768 / 2));
+			this->addChild(awin);
+			auto scaleTo_s = ScaleTo::create(0.5, 0.5);
+			auto scaleTo_b = ScaleTo::create(0.5, 1.0);
+			auto mySequence = Sequence::create(scaleTo_s, scaleTo_b, scaleTo_s->clone(), scaleTo_b->clone(),
+				CCDelayTime::create(3),
+				CCCallFuncND::create(this, callfuncND_selector(WhiteBlackScene::endgame), (void*)this),
+				nullptr);
+			awin->runAction(mySequence);
 			end = true;
 		}
 	}
@@ -266,7 +286,9 @@ void WhiteBlackScene::boom_end(CCNode* pTarget, void* boom) {
 	((Sprite*)boom)->removeAllChildren();
 	this->removeChild((Sprite*)boom);
 }
-
+void WhiteBlackScene::endgame(CCNode* pTarget, void* scene) {
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene(), Color3B(0, 100, 100)));
+}
 void WhiteBlackScene::boom_boom(Sprite* boom) {
 	auto scaleTo_s = ScaleTo::create(0.5, 0.5);
 	auto scaleTo_b = ScaleTo::create(0.5, 1.0);
