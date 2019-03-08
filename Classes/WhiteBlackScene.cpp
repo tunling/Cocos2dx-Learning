@@ -100,13 +100,13 @@ bool WhiteBlackScene::init()
 	this->addChild(actor, 0);
 
 	star = Hero::create("2.png");
-	auto physicsBody = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
-	physicsBody->setGravityEnable(false);
-	physicsBody->setRotationEnable(false);
-	physicsBody->setCategoryBitmask(0x0000ffff);
-	physicsBody->setContactTestBitmask(0xffffffff);
-	physicsBody->setCollisionBitmask(0x0000ffff);
-	star->setPhysicsBody(physicsBody);
+	auto physicsBody1 = PhysicsBody::createBox(Size(32.0f, 48.0f), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+	physicsBody1->setGravityEnable(false);
+	physicsBody1->setRotationEnable(false);
+	physicsBody1->setCategoryBitmask(0x0000ffff);
+	physicsBody1->setContactTestBitmask(0xffffffff);
+	physicsBody1->setCollisionBitmask(0x0000ffff);
+	star->setPhysicsBody(physicsBody1);
 	star->init("star.plist");
 	star->setTag(2);
 	star->setAnchorPoint(Vec2(0.5, 0));
@@ -203,10 +203,12 @@ void WhiteBlackScene::boom_end(CCNode* pTarget, void* boom) {
 	if (((Sprite*)boom)->getTag() == 1) {
 		str = "white.png";
 		tag = 0x0000ffff;
+		(actor->boom)++;
 	}
 	else if (((Sprite*)boom)->getTag() == 2) {
 		str = "dark.png";
 		tag = 0xffff0000;
+		(star->boom)++;
 	}
 	auto boom_boom = Sprite::create();
 	boom_boom->initWithFile(str);
@@ -330,7 +332,7 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 			star->state = 0;
 		}
 
-		if (keycode == EventKeyboard::KeyCode::KEY_SPACE) {
+		if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
 			if (actor->boom > 0) {
 				actor->boom--;
 				float x = actor->getPosition().x;
@@ -345,7 +347,7 @@ void WhiteBlackScene::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 			}
 		}
 
-		if (keycode == EventKeyboard::KeyCode::KEY_ENTER) {
+		if (keycode == EventKeyboard::KeyCode::KEY_SPACE) {
 			if (star->boom > 0) {
 				star->boom--;
 				float x = star->getPosition().x;

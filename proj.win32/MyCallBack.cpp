@@ -49,7 +49,7 @@ Widget::ccWidgetEventCallback MyCallBack::onLocateEventCallback(const string &ca
 }
 void MyCallBack::restart(cocos2d::Ref* sender)
 {
-	Director::getInstance()->end();
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, WhiteBlackScene::createScene(), Color3B(0, 100, 100)));
 }
 
 void MyCallBack::menu(cocos2d::Ref* sender)
