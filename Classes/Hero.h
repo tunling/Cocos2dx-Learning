@@ -14,6 +14,7 @@ public:
 	int state;
 	int tag;
 	int boom;
+	bool movable;
 private:
 protected:
 	SpriteFrameCache* frameCache;

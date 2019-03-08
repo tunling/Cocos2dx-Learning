@@ -18,6 +18,7 @@ void Hero::init(const char* plistFileName) {
 	state = -1;
 	tag = 0;
 	boom = 10;
+	movable = true;
 }
 void Hero::move(int faceTo) {
 	Animate* animate = nullptr;

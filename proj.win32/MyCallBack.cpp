@@ -54,11 +54,11 @@ void MyCallBack::restart(cocos2d::Ref* sender)
 
 void MyCallBack::menu(cocos2d::Ref* sender)
 {
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::create(), Color3B(0, 100, 100)));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene(), Color3B(0, 100, 100)));
 }
 void MyCallBack::click_start(cocos2d::Ref* sender)
 {
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, WhiteBlackScene::create(), Color3B(0, 100, 100)));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, WhiteBlackScene::createScene(), Color3B(0, 100, 100)));
 }
 
 void MyCallBack::click_end(cocos2d::Ref* sender)
