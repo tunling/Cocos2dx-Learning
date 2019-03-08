@@ -33,7 +33,13 @@
     <ClCompile Include="..\Classes\Hero.cpp">
       <Filter>src\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\FirstScene.cpp">
+    <ClCompile Include="MyCallBack.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCallBackReader.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WhiteBlackScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +56,13 @@
     <ClInclude Include="..\Classes\Hero.h">
       <Filter>src\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\FirstScene.h">
+    <ClInclude Include="MyCallBack.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCallBackReader.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WhiteBlackScene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
   </ItemGroup>
